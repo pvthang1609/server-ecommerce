@@ -1,0 +1,60 @@
+{
+    "id": 1,
+    "name": "VINTAS THE NEW MILITARY",
+    "price": 50,
+    "mainImg": "https://res.cloudinary.com/august-ecommerce/image/upload/v1608219858/august/image/product-demo/2_zihbu7.jpg",
+    "classify": "sale",
+    "category": "shoe",
+    "gender": "man",
+    "album": ["https://res.cloudinary.com/august-ecommerce/image/upload/v1608219855/august/image/product-demo/4_e4fzwz.jpg", "https://res.cloudinary.com/august-ecommerce/image/upload/v1608219852/august/image/product-demo/3_uejt6r.jpg", "https://res.cloudinary.com/august-ecommerce/image/upload/v1608219852/august/image/product-demo/1_podd0a.jpg"],
+    "info": [
+      {
+        "code": "aug1-36",
+        "size": 36,
+        "inventory": 20
+      },
+      {
+        "code": "aug1-37",
+        "size": 37,
+        "inventory": 10
+      },
+      {
+        "code": "aug1-38",
+        "size": 38,
+        "inventory": 12
+      },
+      {
+        "code": "aug1-39",
+        "size": 39,
+        "inventory": 17
+      },
+      {
+        "code": "aug1-40",
+        "size": 40,
+        "inventory": 33
+      },
+      {
+        "code": "aug1-41",
+        "size": 41,
+        "inventory": 22,
+        "price": 52
+      },
+      {
+        "code": "aug1-42",
+        "size": 42,
+        "inventory": 11,
+        "price": 52
+      },
+      {
+        "code": "aug1-43",
+        "size": 43,
+        "inventory": 51
+      },
+      {
+        "code": "aug1-44",
+        "size": 44,
+        "inventory": 25,
+        "price": 48
+      }
+    ]
+}
