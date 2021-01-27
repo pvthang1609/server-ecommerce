@@ -9,17 +9,18 @@ const productSchema = new mongoose.Schema({
     type: Number,
     min: 0,
   },
-  mainImg: String,
-  classify: {
+  collections: {
+    type: String,
+  },
+  type: {
+    type: String,
+  },
+  gender: String,
+  tag: {
     type: String,
     default: null,
   },
-  category: {
-    type: String,
-    default: "uncategorized",
-  },
-  gender: String,
-  album: [String],
+  img: [String],
   views: {
     type: Number,
     default: 0,
