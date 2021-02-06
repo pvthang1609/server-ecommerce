@@ -19,7 +19,7 @@ router.post("/products", async (req, res) => {
     const saveProduct = await newProduct.save();
     res.json(saveProduct);
   } catch (err) {
-    res.json({ message: err });
+    res.json({ errors: err.message });
   }
 });
 
@@ -73,7 +73,7 @@ router.get("/products", async (req, res) => {
       totalPage: Math.ceil(count / limit),
     });
   } catch (err) {
-    res.json({ message: err });
+    res.status(422).json({ errors: err.message });
   }
 });
 
@@ -82,7 +82,7 @@ router.get("/products/:id", async (req, res) => {
     const queryProducts = await Product.findById(req.params.id);
     res.json(queryProducts);
   } catch (err) {
-    res.status(400).json({ message: err });
+    res.status(422).json({ errors: err.message });
   }
 });
 

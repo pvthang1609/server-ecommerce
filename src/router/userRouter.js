@@ -36,18 +36,20 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   const { error } = loginValidate(req.body);
-  if (error) return res.json({ message: error.details[0].message });
+  if (error) return res.json({ errors: error.details[0].message });
 
   const infoUser = await User.findOne({ email: req.body.email });
-  if (!infoUser) return res.json({ message: "Email does not exist" });
+  if (!infoUser)
+    return res.status(422).json({ errors: "Email does not exist" });
 
   const checkPass = await bcrypt.compare(req.body.password, infoUser.password);
-  if (!checkPass) return res.json({ message: "password is wrong..!" });
+  if (!checkPass)
+    return res.status(442).json({ errors: "password is wrong..!" });
 
   const { _id } = infoUser;
   jwt.sign({ _id: _id }, process.env.SECRET_KEY, function (err, token) {
     if (err) {
-      res.status(400).json({ message: err.message });
+      res.status(400).json({ errors: err.message });
       return;
     }
     res.json({ infoUser, token });
@@ -61,7 +63,7 @@ router.get("/edit", auth, async (req, res) => {
       const user = await User.findOne({ _id: _id });
       return res.send(user);
     } catch (err) {
-      return res.status(400).json({ message: err });
+      return res.status(400).json({ errors: err.message });
     }
   }
 });
