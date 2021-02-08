@@ -10,6 +10,7 @@ const invoiceSchema = new mongoose.Schema({
   email: {
     type: String,
   },
+  discount: String,
   address: String,
   order: {
     type: [Object],

@@ -67,13 +67,13 @@ router.get("/products", async (req, res) => {
       .limit(limit)
       .skip(limit * (page - 1))
       .sort(orderFilter);
-    res.json({
+    return res.json({
       queryProducts,
       page: page,
       totalPage: Math.ceil(count / limit),
     });
   } catch (err) {
-    res.status(422).json({ errors: err.message });
+    return res.status(422).json({ errors: err.message });
   }
 });
 
