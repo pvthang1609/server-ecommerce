@@ -1,15 +1,19 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const morgan = require("morgan");
 
 const ApiRouter = require("./router/apiRouter");
 const UserRouter = require("./router/userRouter");
 const discountRouter = require("./router/discountRouter");
+const payRouter = require("./router/payRouter");
+const invoiceRouter = require("./router/invoiceRouter");
 
 const bodyParser = require("body-parser");
 const cors = require("cors");
 require("dotenv").config();
 
+app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
@@ -20,6 +24,8 @@ mongoose.connect(
   () => console.log("conneted..!")
 );
 
+app.use("/invoice", invoiceRouter);
+app.use("/pay", payRouter);
 app.use("/discount", discountRouter);
 app.use("/api", ApiRouter); //fix name finally
 app.use("/user", UserRouter);

@@ -10,8 +10,6 @@ const { registerValidate, loginValidate } = require("../app/validation");
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
-  console.log(req.headers);
-
   //Validation before post data on server
   const { error } = registerValidate(req.body);
   if (error) return res.status(400).json({ message: error.details[0].message });
