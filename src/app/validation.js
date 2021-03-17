@@ -29,7 +29,7 @@ const invoiceSchema = Joi.object({
     code: Joi.string(),
     percent: Joi.number(),
     _id: Joi.string(),
-  }),
+  }).allow(null),
   email: Joi.string().email().required(),
   logistics: Joi.string().required(),
   name: Joi.string().required(),

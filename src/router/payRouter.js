@@ -3,7 +3,6 @@ const moment = require("moment");
 const CryptoJS = require("crypto-js");
 const axios = require("axios").default;
 require("dotenv").config();
-const request = require("postman-request");
 
 const router = express.Router();
 

@@ -1,5 +1,6 @@
 const express = require("express");
 const Product = require("../model/product");
+const auth = require("./verifyToken");
 
 const router = express.Router();
 
@@ -81,6 +82,16 @@ router.get("/products/:id", async (req, res) => {
   try {
     const queryProducts = await Product.findById(req.params.id);
     res.json(queryProducts);
+  } catch (err) {
+    res.status(422).json({ errors: err.message });
+  }
+});
+
+//delete
+router.delete("/products/:id", auth, async (req, res) => {
+  try {
+    await Product.deleteOne({ _id: req.params.id });
+    res.json({ message: `Deleted product with id: ${req.params.id}` });
   } catch (err) {
     res.status(422).json({ errors: err.message });
   }

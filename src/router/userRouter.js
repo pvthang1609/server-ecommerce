@@ -44,14 +44,18 @@ router.post("/login", async (req, res) => {
   if (!checkPass)
     return res.status(442).json({ errors: "password is wrong..!" });
 
-  const { _id } = infoUser;
-  jwt.sign({ _id: _id }, process.env.SECRET_KEY, function (err, token) {
-    if (err) {
-      res.status(400).json({ errors: err.message });
-      return;
+  const { _id, isAdmin } = infoUser;
+  jwt.sign(
+    { _id: _id, isAdmin: isAdmin },
+    process.env.SECRET_KEY,
+    function (err, token) {
+      if (err) {
+        res.status(400).json({ errors: err.message });
+        return;
+      }
+      res.json({ infoUser, token });
     }
-    res.json({ infoUser, token });
-  });
+  );
 });
 
 router.get("/edit", auth, async (req, res) => {
@@ -60,6 +64,18 @@ router.get("/edit", auth, async (req, res) => {
     try {
       const user = await User.findOne({ _id: _id });
       return res.send(user);
+    } catch (err) {
+      return res.status(400).json({ errors: err.message });
+    }
+  }
+});
+
+router.get("/is-admin", auth, async (req, res) => {
+  if (req.user) {
+    const { _id } = req.user;
+    try {
+      const user = await User.findOne({ _id: _id });
+      return res.json(user);
     } catch (err) {
       return res.status(400).json({ errors: err.message });
     }
