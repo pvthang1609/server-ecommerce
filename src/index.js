@@ -3,11 +3,12 @@ const app = express();
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 
-const ApiRouter = require("./router/apiRouter");
+const ProductRouter = require("./router/productRouter");
 const UserRouter = require("./router/userRouter");
-const discountRouter = require("./router/discountRouter");
-const payRouter = require("./router/payRouter");
-const invoiceRouter = require("./router/invoiceRouter");
+const DiscountRouter = require("./router/discountRouter");
+const PayRouter = require("./router/payRouter");
+const InvoiceRouter = require("./router/invoiceRouter");
+const RatingRouter = require("./router/ratingRouter");
 
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -24,10 +25,11 @@ mongoose.connect(
   () => console.log("conneted..!")
 );
 
-app.use("/invoice", invoiceRouter);
-app.use("/pay", payRouter);
-app.use("/discount", discountRouter);
-app.use("/api", ApiRouter); //fix name finally
+app.use("/invoice", InvoiceRouter);
+app.use("/pay", PayRouter);
+app.use("/discount", DiscountRouter);
+app.use("/product", ProductRouter); //fix name finally
 app.use("/user", UserRouter);
+app.use("/rating", RatingRouter);
 
 app.listen(process.env.PORT || 5000, console.log("server is running.!"));

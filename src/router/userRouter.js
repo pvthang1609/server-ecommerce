@@ -3,11 +3,18 @@ const User = require("../model/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const auth = require("./verifyToken");
-
 const { registerValidate, loginValidate } = require("../app/validation");
 
 const router = express.Router();
+
+router.get("/", async (req, res) => {
+  const ids = Object.values(req.query);
+  const values = await User.find().where("_id").in(ids).exec();
+  const idUsers = values.map((item) => {
+    return { id: item._id, name: item.name };
+  });
+  res.json(idUsers);
+});
 
 router.post("/register", async (req, res) => {
   //Validation before post data on server
@@ -56,30 +63,6 @@ router.post("/login", async (req, res) => {
       res.json({ infoUser, token });
     }
   );
-});
-
-router.get("/edit", auth, async (req, res) => {
-  if (req.user) {
-    const { _id } = req.user;
-    try {
-      const user = await User.findOne({ _id: _id });
-      return res.send(user);
-    } catch (err) {
-      return res.status(400).json({ errors: err.message });
-    }
-  }
-});
-
-router.get("/is-admin", auth, async (req, res) => {
-  if (req.user) {
-    const { _id } = req.user;
-    try {
-      const user = await User.findOne({ _id: _id });
-      return res.json(user);
-    } catch (err) {
-      return res.status(400).json({ errors: err.message });
-    }
-  }
 });
 
 module.exports = router;

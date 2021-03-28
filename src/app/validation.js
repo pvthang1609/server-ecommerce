@@ -1,5 +1,6 @@
 const Joi = require("@hapi/joi");
 
+//register
 const registerSchema = Joi.object({
   name: Joi.string().min(6).max(20).required(),
   email: Joi.string().min(6).email().required(),
@@ -10,7 +11,7 @@ const registerValidate = (data) => {
   return value;
 };
 
-//
+//login
 const loginSchema = Joi.object({
   email: Joi.string().min(6).email().required(),
   password: Joi.string().min(6).max(255).required(),
@@ -20,7 +21,7 @@ const loginValidate = (data) => {
   return value;
 };
 
-//
+//invoice
 const invoiceSchema = Joi.object({
   address: Joi.string().required(),
   discount: Joi.object({
@@ -55,6 +56,18 @@ const invoiceValidate = (data) => {
   return value;
 };
 
+//rating
+const ratingSchema = Joi.object({
+  id_product: Joi.string().required(),
+  star: Joi.number().required(),
+  comment: Joi.string(),
+});
+const ratingValidate = (data) => {
+  const value = ratingSchema.validate(data);
+  return value;
+};
+
 module.exports.registerValidate = registerValidate;
 module.exports.loginValidate = loginValidate;
 module.exports.invoiceValidate = invoiceValidate;
+module.exports.ratingValidate = ratingValidate;

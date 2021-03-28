@@ -1,10 +1,10 @@
 const express = require("express");
 const Product = require("../model/product");
-const auth = require("./verifyToken");
+const { checkAdmin } = require("../middleware/verifyToken");
 
 const router = express.Router();
 
-router.post("/products", async (req, res) => {
+router.post("/", checkAdmin, async (req, res) => {
   const newProduct = new Product({
     id: req.body.id,
     name: req.body.name,
@@ -24,7 +24,7 @@ router.post("/products", async (req, res) => {
   }
 });
 
-router.get("/products", async (req, res) => {
+router.get("/", async (req, res) => {
   const name = req.query.name || "";
   const gender = req.query.gender || "";
   const type = req.query.type || "";
@@ -78,7 +78,7 @@ router.get("/products", async (req, res) => {
   }
 });
 
-router.get("/products/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const queryProducts = await Product.findById(req.params.id);
     res.json(queryProducts);
@@ -88,7 +88,7 @@ router.get("/products/:id", async (req, res) => {
 });
 
 //delete
-router.delete("/products/:id", auth, async (req, res) => {
+router.delete("/:id", checkAdmin, async (req, res) => {
   try {
     await Product.deleteOne({ _id: req.params.id });
     res.json({ message: `Deleted product with id: ${req.params.id}` });
