@@ -2,9 +2,10 @@ const Joi = require("@hapi/joi");
 
 //register
 const registerSchema = Joi.object({
-  name: Joi.string().min(6).max(20).required(),
+  name: Joi.string().min(2).max(20).required(),
   email: Joi.string().min(6).email().required(),
   password: Joi.string().min(6).max(255).required(),
+  urlAvatar: Joi.string(),
 });
 const registerValidate = (data) => {
   const value = registerSchema.validate(data);

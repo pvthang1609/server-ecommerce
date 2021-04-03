@@ -20,8 +20,8 @@ router.post("/", checkToken, async (req, res) => {
   try {
     const saveRating = await newRating.save();
     res.json(saveRating);
-  } catch (error) {
-    res.status(400).json({ message: error });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
   }
 });
 
@@ -34,8 +34,8 @@ router.get("/:id", async (req, res) => {
       overallRating: Math.round(overallRating * 10) / 10,
       ratingList: ratingList,
     });
-  } catch (error) {
-    res.status(400).json({ message: err });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
   }
 });
 

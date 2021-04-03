@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
   const { error } = invoiceValidate(req.body);
-  if (error) return res.status(400).json({ message: error.details[0].message });
+  if (error) return res.status(400).json({ error: error.details[0].message });
 
   //create
   const newInvoice = new Invoice({
@@ -26,7 +26,7 @@ router.post("/", async (req, res) => {
     const saveInvoice = await newInvoice.save();
     res.json(saveInvoice);
   } catch (err) {
-    res.status(400).json({ message: err });
+    res.status(400).json({ error: err.message });
   }
 
   // khi xác nhận 1 invoice => trừ số lượng của sản phẩm, mã giảm giá trên sever

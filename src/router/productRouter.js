@@ -5,6 +5,8 @@ const { checkAdmin } = require("../middleware/verifyToken");
 const router = express.Router();
 
 router.post("/", checkAdmin, async (req, res) => {
+  //before check Joi validate
+
   const newProduct = new Product({
     id: req.body.id,
     name: req.body.name,
@@ -20,7 +22,7 @@ router.post("/", checkAdmin, async (req, res) => {
     const saveProduct = await newProduct.save();
     res.json(saveProduct);
   } catch (err) {
-    res.json({ errors: err.message });
+    res.json({ error: err.message });
   }
 });
 
@@ -74,7 +76,7 @@ router.get("/", async (req, res) => {
       totalPage: Math.ceil(count / limit),
     });
   } catch (err) {
-    return res.status(422).json({ errors: err.message });
+    return res.status(422).json({ error: err.message });
   }
 });
 
@@ -83,7 +85,7 @@ router.get("/:id", async (req, res) => {
     const queryProducts = await Product.findById(req.params.id);
     res.json(queryProducts);
   } catch (err) {
-    res.status(422).json({ errors: err.message });
+    res.status(422).json({ error: err.message });
   }
 });
 
@@ -93,7 +95,7 @@ router.delete("/:id", checkAdmin, async (req, res) => {
     await Product.deleteOne({ _id: req.params.id });
     res.json({ message: `Deleted product with id: ${req.params.id}` });
   } catch (err) {
-    res.status(422).json({ errors: err.message });
+    res.status(422).json({ error: err.message });
   }
 });
 
