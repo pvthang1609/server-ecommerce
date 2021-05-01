@@ -23,37 +23,27 @@ const loginValidate = (data) => {
 };
 
 //invoice
-const invoiceSchema = Joi.object({
+const orderSchema = Joi.object({
   address: Joi.string().required(),
-  discount: Joi.object({
-    amount: Joi.number(),
-    applyTime: Joi.date(),
-    code: Joi.string(),
-    percent: Joi.number(),
-    _id: Joi.string(),
-  }).allow(null),
+  discount: Joi.string().allow(null),
   email: Joi.string().email().required(),
   logistics: Joi.string().required(),
   name: Joi.string().required(),
-  no: Joi.string().length(13).required(),
   order: Joi.array()
     .items(
       Joi.object({
         id: Joi.string(),
-        img: Joi.string().uri(),
-        name: Joi.string(),
-        price: Joi.number().integer(),
         quantity: Joi.number().integer(),
         size: Joi.number().max(44).integer(),
       })
     )
     .required(),
-  payment: Joi.object().required(),
+  payment: Joi.string().required(),
   status: Joi.string().required(),
   tel: Joi.string().required(),
 });
-const invoiceValidate = (data) => {
-  const value = invoiceSchema.validate(data);
+const orderValidate = (data) => {
+  const value = orderSchema.validate(data);
   return value;
 };
 
@@ -68,7 +58,42 @@ const ratingValidate = (data) => {
   return value;
 };
 
+//product
+const productSchema = Joi.object({
+  name: Joi.string().required(),
+  price: Joi.number().min(100).required(),
+  brand: Joi.string(),
+  type: Joi.string().required(),
+  gender: Joi.string(),
+  tag: Joi.string(),
+  img: Joi.array().items(Joi.string()),
+  desc: Joi.string(),
+});
+const productValidate = (data) => {
+  const value = productSchema.validate(data);
+  return value;
+};
+
+//detailProduct
+const detailProductSchema = Joi.object({
+  id_product: Joi.string().required(),
+  inventory: Joi.array().items(
+    Joi.object({
+      size: Joi.number().required(),
+      amount: Joi.number().required(),
+    })
+  ),
+  posts: Joi.string(),
+  favorite: Joi.number(),
+});
+const detailProductValidate = (data) => {
+  const value = detailProductSchema.validate(data);
+  return value;
+};
+
 module.exports.registerValidate = registerValidate;
 module.exports.loginValidate = loginValidate;
-module.exports.invoiceValidate = invoiceValidate;
+module.exports.orderValidate = orderValidate;
 module.exports.ratingValidate = ratingValidate;
+module.exports.productValidate = productValidate;
+module.exports.detailProductValidate = detailProductValidate;

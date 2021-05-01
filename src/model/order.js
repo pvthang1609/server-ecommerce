@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
-const invoiceSchema = new mongoose.Schema({
-  no: String,
+const orderSchema = new mongoose.Schema({
   name: {
     type: String,
     minlength: 2,
@@ -16,9 +15,7 @@ const invoiceSchema = new mongoose.Schema({
     type: [Object],
     minlength: 1,
   },
-  payment: {
-    type: [Object],
-  },
+  payment: String,
   status: String,
   logistics: String,
   timeInit: {
@@ -27,4 +24,4 @@ const invoiceSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Invoice", invoiceSchema, "invoice");
+module.exports = mongoose.model("Order", orderSchema, "order");

@@ -1,26 +1,54 @@
 const express = require("express");
 const Product = require("../model/product");
+const DetailProduct = require("../model/detailProduct");
 const { checkAdmin } = require("../middleware/verifyToken");
+const { productValidate, detailProductValidate } = require("../app/validation");
 
 const router = express.Router();
 
 router.post("/", checkAdmin, async (req, res) => {
-  //before check Joi validate
+  const { productError } = productValidate(req.body);
+  const { detailError } = detailProductValidate(req.body);
+  if (productError || detailError)
+    return res.status(400).json({
+      error:
+        productError?.details[0].message ??
+        detailError?.details[0].message ??
+        null,
+    });
+
+  const {
+    name,
+    price,
+    type,
+    brand,
+    gender,
+    img,
+    desc,
+    tag,
+    inventory,
+    posts,
+  } = req.body;
 
   const newProduct = new Product({
-    id: req.body.id,
-    name: req.body.name,
-    price: req.body.price,
-    type: req.body.type,
-    collections: req.body.collections,
-    gender: req.body.gender,
-    img: req.body.img,
-    desc: req.body.desc,
-    info: req.body.info,
+    name: name,
+    price: price,
+    type: type,
+    brand: brand,
+    gender: gender,
+    img: img,
+    desc: desc,
+    tag: tag,
   });
   try {
     const saveProduct = await newProduct.save();
-    res.json(saveProduct);
+    const newDetailProduct = new DetailProduct({
+      id_product: saveProduct._id,
+      inventory: inventory,
+      posts: posts,
+    });
+    const saveDetailProduct = await newDetailProduct.save();
+    res.json({ message: ` ID : ${saveDetailProduct.id_product} success.` });
   } catch (err) {
     res.json({ error: err.message });
   }
@@ -30,22 +58,20 @@ router.get("/", async (req, res) => {
   const name = req.query.name || "";
   const gender = req.query.gender || "";
   const type = req.query.type || "";
-  const collections = req.query.collections || "";
+  const brand = req.query.brand || "";
   const sortOrder = req.query.sortOrder || "";
   const page = Number(req.query.page) || 1;
 
   const nameFilter = name ? { name: { $regex: name, $options: "i" } } : {};
   const genderFilter = gender ? { gender: gender } : {};
   const typeFilter = type ? { type: type } : {};
-  const collectionsFilter = collections ? { collections: collections } : {};
+  const brandFilter = brand ? { brand: brand } : {};
   const orderFilter =
     sortOrder === "lower"
       ? { price: -1 }
       : sortOrder === "higher"
       ? { price: 1 }
       : sortOrder === "mostviews"
-      ? { views: 1 }
-      : sortOrder === "mostfav"
       ? { favorite: 1 }
       : sortOrder === "newest"
       ? { timeInit: 1 }
@@ -56,14 +82,14 @@ router.get("/", async (req, res) => {
   try {
     const count = await Product.countDocuments({
       ...nameFilter,
-      ...collectionsFilter,
+      ...brandFilter,
       ...typeFilter,
       ...genderFilter,
     });
 
     const queryProducts = await Product.find({
       ...nameFilter,
-      ...collectionsFilter,
+      ...brandFilter,
       ...typeFilter,
       ...genderFilter,
     })

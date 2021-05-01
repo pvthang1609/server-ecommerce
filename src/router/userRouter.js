@@ -22,6 +22,9 @@ router.post("/register", async (req, res) => {
   const { error } = registerValidate(req.body);
   if (error) return res.status(400).json({ error: error.details[0].message });
 
+  const infoUser = await User.findOne({ email: req.body.email });
+  if (infoUser) return res.status(422).json({ error: "email already exists" });
+
   //BCRYPT
   const salt = await bcrypt.genSalt(10);
   const hashPass = await bcrypt.hash(req.body.password, salt);
@@ -33,6 +36,7 @@ router.post("/register", async (req, res) => {
     password: hashPass,
     urlAvatar: req.body.urlAvatar,
   });
+  console.log(newUser);
   try {
     const saveUser = await newUser.save();
     res.json({ message: `Đã đăng kí tài khoản ${saveUser.name} thành công!` });
@@ -61,7 +65,14 @@ router.post("/login", async (req, res) => {
         res.status(400).json({ error: err.message });
         return;
       }
-      res.json({ infoUser, token });
+      res.json({
+        infoUser: {
+          _id: infoUser._id,
+          name: infoUser.name,
+          urlAvatar: infoUser.urlAvatar,
+        },
+        token,
+      });
     }
   );
 });

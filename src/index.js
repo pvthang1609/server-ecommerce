@@ -7,7 +7,7 @@ const ProductRouter = require("./router/productRouter");
 const UserRouter = require("./router/userRouter");
 const DiscountRouter = require("./router/discountRouter");
 const PayRouter = require("./router/payRouter");
-const InvoiceRouter = require("./router/invoiceRouter");
+const OrderRouter = require("./router/orderRouter");
 const RatingRouter = require("./router/ratingRouter");
 
 const bodyParser = require("body-parser");
@@ -25,7 +25,7 @@ mongoose.connect(
   () => console.log("conneted..!")
 );
 
-app.use("/invoice", InvoiceRouter);
+app.use("/order", OrderRouter);
 app.use("/pay", PayRouter);
 app.use("/discount", DiscountRouter);
 app.use("/product", ProductRouter); //fix name finally

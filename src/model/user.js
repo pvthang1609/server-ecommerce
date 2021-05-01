@@ -25,6 +25,11 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  urlAvatar: {
+    type: String,
+    default:
+      "https://res.cloudinary.com/august-ecommerce/image/upload/v1617496178/avatar-user/oyxlnwrejtsnympnokdx.png",
+  },
   timeInt: {
     type: Date,
     default: Date.now,

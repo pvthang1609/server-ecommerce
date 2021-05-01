@@ -3,34 +3,28 @@ const mongoose = require("mongoose");
 // Create schema
 
 const productSchema = new mongoose.Schema({
-  id: Number,
   name: String,
   price: {
     type: Number,
     min: 0,
   },
-  collections: {
+  brand: {
     type: String,
+    default: "no-brand",
   },
   type: {
     type: String,
   },
-  gender: String,
+  gender: {
+    type: String,
+    default: "unisex",
+  },
   tag: {
     type: String,
     default: null,
   },
   img: [String],
-  views: {
-    type: Number,
-    default: 0,
-  },
-  favorite: {
-    type: Number,
-    default: 0,
-  },
   desc: String,
-  info: [{ code: String, size: Number, inventory: Number }],
   timeInit: {
     type: Date,
     default: Date.now,
